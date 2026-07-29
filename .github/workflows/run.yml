@@ -21,10 +21,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install oci requests paramiko python-dotenv
 
+      # OCI Config 및 Key 파일을 리눅스 가상 환경에 생성해주는 단계
+      - name: Setup OCI Config
+        run: |
+          mkdir -p ~/.oci
+          echo "${{ secrets.OCI_CONFIG }}" > ~/.oci/config
+          echo "${{ secrets.OCI_KEY_FILE }}" > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
       - name: Run creation script
         env:
-          OCI_CONFIG: ${{ secrets.OCI_CONFIG }}
-          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
           OCPUS: ${{ secrets.OCPUS }}
           MEMORY_IN_GBS: ${{ secrets.MEMORY_IN_GBS }}
           DISPLAY_NAME: ${{ secrets.DISPLAY_NAME }}
