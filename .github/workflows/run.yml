@@ -34,6 +34,12 @@ jobs:
 
           chmod 600 oci_api_key.pem
 
+          echo "=========================================="
+          echo "★ [디버깅] 실제 생성된 oci_config 파일 내용 ★"
+          echo "=========================================="
+          cat oci_config
+          echo "=========================================="
+
       - name: Run creation script
         env:
           OCPUS: ${{ secrets.OCPUS }}
