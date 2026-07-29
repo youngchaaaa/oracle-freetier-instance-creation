@@ -24,21 +24,14 @@ jobs:
 
       - name: Setup OCI Config File
         run: |
-          cat << 'EOF' > oci_config
-          ${{ secrets.OCI_CONFIG }}
-          EOF
+          # Base64로 암호화된 OCI_CONFIG를 복원하여 파일 생성
+          echo "${{ secrets.OCI_CONFIG }}" | base64 --decode > oci_config
 
           cat << 'EOF' > oci_api_key.pem
           ${{ secrets.OCI_KEY_FILE }}
           EOF
 
           chmod 600 oci_api_key.pem
-
-          echo "=========================================="
-          echo "★ [디버깅] 실제 생성된 oci_config 파일 내용 ★"
-          echo "=========================================="
-          cat oci_config
-          echo "=========================================="
 
       - name: Run creation script
         env:
